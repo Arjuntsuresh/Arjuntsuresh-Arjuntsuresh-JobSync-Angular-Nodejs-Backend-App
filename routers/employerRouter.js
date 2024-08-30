@@ -6,7 +6,7 @@ const employerHelper = require("../helpers/employerHelper");
 
 employerRoute.post('/upload-job',async (req,res)=>{
     try {
-        const status=await employerHelper.addNewJob(req.body);
+        const status=await employerHelper.addNewJob(req.body); 
         if(!status){
             throw new Error("couldn't add new job");
         }

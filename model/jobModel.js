@@ -8,12 +8,12 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  jobDiscription: {
+  jobDescription: {
     type: String,
     required: true,
   },
   applicationDeadline: {
-    type: Date,
+    type: String,
     required: true,
   },
   location:{
