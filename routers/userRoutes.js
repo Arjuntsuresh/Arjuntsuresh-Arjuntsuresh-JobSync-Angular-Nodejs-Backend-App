@@ -54,17 +54,55 @@ userRoute.get("/jobs/:id", async (req, res) => {
   }
 });
 
-userRoute.post("/submit-application", async (req, res) => {
+userRoute.post("/submit-application", upload.single('resume'), async (req, res) => {
   try {
-    const status = await userHelper.saveApplication(req.body);
+    const {
+      jobId,
+      firstName,
+      lastName,
+      citizenship,
+      dateOfBirth,
+      address,
+      zipCode,
+      city,
+      phoneNumber,
+      email,
+      coverLetter
+    } = req.body;
+    
+
+    // Get the resume file name from req.file
+    const resume = req.file ? req.file.filename : null;
+    
+    if (!resume) {
+      throw new Error("Resume file is required");
+    }
+
+    const status = await userHelper.saveApplication({
+      jobId,
+      firstName,
+      lastName,
+      citizenship,
+      dateOfBirth,
+      address,
+      zipCode,
+      city,
+      phoneNumber,
+      email,
+      resume,
+      coverLetter
+    });
+
     if (!status) {
       throw new Error("Failed to submit application");
     }
+
     res.json({
       status: "success",
       message: "Application successfully submitted",
     });
   } catch (error) {
+    
     res.status(500).send(error.message);
   }
 });

@@ -23,43 +23,63 @@ const getJobById = async (id) => {
 };
 
 const saveApplication = async ({
-  name,
-  email,
+  jobId,
+  firstName,
+  lastName,
+  citizenship,
+  dateOfBirth,
+  address,
+  zipCode,
+  city,
   phoneNumber,
+  email,
   resume,
   coverLetter,
 }) => {
-  if (!name || !email || !phoneNumber || !resume || !coverLetter) {
+  // Check if all required fields are provided
+  if (
+    !jobId ||
+    !firstName ||
+    !lastName ||
+    !citizenship ||
+    !dateOfBirth ||
+    !address ||
+    !zipCode ||
+    !city ||
+    !phoneNumber ||
+    !email ||
+    !resume ||
+    !coverLetter
+  ) {
     return false;
   }
-  const resumeUrl = "http://localhost:3000/resume/uploads/" + resume;
-  return applicationData = new applicationModel({
-    name,
-    email: email.toLowerCase(),
+  
+  // Construct the resume URL
+  const resumeUrl = `http://localhost:3000/resume/uploads/${resume}`;
+
+  // Create and save the application data
+  const applicationData = new applicationModel({
+    jobId,
+    firstName,
+    lastName,
+    citizenship,
+    dateOfBirth,
+    address,
+    zipCode,
+    city,
     phoneNumber,
+    email: email.toLowerCase(),
     resume: resumeUrl,
     coverLetter,
-  }).save();
+  });
+
+  return applicationData.save();
 };
 
-// const resumeUpload=async (id,resume) =>{
-//     if(!id || !resume){
-//         return false;
-//     }else{
-//         return await applicationModel.updateOne(
-//             {_id:new mongoose.Types.ObjectId(id)},
-//             {
-//                 $set:{
-//                     resume:'http://localhost:3000/images/uploads/'+resume
-//                 }
-//             }
-//         )
-//     }
-// }
+
 
 module.exports = {
   getAllJobs,
   getJobById,
   saveApplication,
-  // resumeUpload
 };
