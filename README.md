@@ -56,7 +56,7 @@ To run the application locally:
    
 2. Navigate to the project directory:
    ```bash
-   cd your-repository
+   cd ../backend
    
 3. Install the dependencies:
    ```bash
