@@ -1,12 +1,10 @@
 require("dotenv").config();
 const express = require("express");
 const userRoute = express.Router();
-const jobsModel = require("../model/jobModel");
 const userHelper = require("../helpers/userHelper");
 const multer = require("multer");
 const userModel = require("../model/userModel");
-const { OAuth2Client } = require("google-auth-library");
-
+//multer.register
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "views/uploads/");
@@ -16,7 +14,7 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-
+//This route is used to find the uploaded jobs.
 userRoute.post("/jobs", async (req, res) => {
   try {
     const { title, location } = req.body;
@@ -35,7 +33,7 @@ userRoute.post("/jobs", async (req, res) => {
       .json({ status: "error", message: "Error while retrieving jobs" });
   }
 });
-
+//This route is used to retrieve the details of the specified job.
 userRoute.get("/jobs/:id", async (req, res) => {
   try {
     let id = req.params;
@@ -54,7 +52,7 @@ userRoute.get("/jobs/:id", async (req, res) => {
       .json({ status: "error", message: "error while retrieving job details" });
   }
 });
-
+//This route is used to submit job application for individual users.
 userRoute.post(
   "/submit-application",
   upload.single("resume"),
@@ -109,7 +107,7 @@ userRoute.post(
     }
   }
 );
-
+//This is the route used to sign up the user.
 userRoute.post("/signup", async (req, res) => {
   try {
     const { userName, email, mobile, password } = req.body;
@@ -130,13 +128,13 @@ userRoute.post("/signup", async (req, res) => {
       });
       await userData.save();
       //200 ok success
-      reuturnData = {
+      returnData = {
         email: userData.email,
         mobile: userData.mobile,
         userName: userData.userName,
         _id: userData._id,
       };
-      res.status(200).json(reuturnData);
+      res.status(200).json(returnData);
     } else {
       // 409 Conflict user already exists.
       res.status(409).json({ status: "error", message: "User already exist" });
@@ -146,22 +144,23 @@ userRoute.post("/signup", async (req, res) => {
     res.status(500).json({ status: "error", message: error.message });
   }
 });
-
+//This is the route for login users using google auth and password.
 userRoute.post("/login", async (req, res) => {
   try {
     if (req.body.credential) {
-      const userDeatils = await userHelper.verifyToken(req.body.credential);
-      if (!userDeatils) {
+      const userDetails = await userHelper.verifyToken(req.body.credential);
+      if (!userDetails) {
         throw new Error("Invalid token");
       }
-      const user = await userHelper.checkUser(userDeatils.email);
+      const user = await userHelper.checkUser(userDetails.email);
       if (user) {
         const jwtSecretKey = process.env.JWT_SECRET_KEY;
         const token = await userHelper.generateToken(jwtSecretKey, user._id);
         if (!token) {
           throw new Error("token is not found");
         }
-        return res.status(200).json({ status: "success", user, token });
+        res.redirect("http://localhost:4200/");
+        // res.status(200).json({ status: "success", user, token });
       }
     } else {
       const { email, password } = req.body;

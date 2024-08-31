@@ -4,10 +4,9 @@ const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { OAuth2Client } = require('google-auth-library');
+const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
-
-
+//This is the helper function that will be called when the user is searching for jobs.
 const getAllJobs = async (title, location) => {
   let query = {};
 
@@ -20,12 +19,12 @@ const getAllJobs = async (title, location) => {
   }
   return await jobsModel.find(query);
 };
-
+//This is the helper function that will be called to retrieve the details of a job.
 const getJobById = async (id) => {
   id = new mongoose.Types.ObjectId(id);
   return await jobsModel.findById({ _id: id });
 };
-
+//This is the helper function for saving user job application in database.
 const saveApplication = async ({
   jobId,
   firstName,
@@ -57,10 +56,8 @@ const saveApplication = async ({
   ) {
     return false;
   }
-
   // Construct the resume URL
   const resumeUrl = `http://localhost:3000/resume/uploads/${resume}`;
-
   // Create and save the application data
   const applicationData = new applicationModel({
     jobId,
@@ -76,10 +73,9 @@ const saveApplication = async ({
     resume: resumeUrl,
     coverLetter,
   });
-
   return applicationData.save();
 };
-
+// This is the helper function for checking if the user is exist or not.
 const checkUser = async (email) => {
   try {
     const data = await userModel.findOne({ email });
@@ -92,7 +88,7 @@ const checkUser = async (email) => {
     return error;
   }
 };
-
+//This is the helper function for encrypting the password in to hash.
 const encryptPassword = (password) => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, 10, (err, hash) => {
@@ -104,11 +100,10 @@ const encryptPassword = (password) => {
     });
   });
 };
-
+//This is helper function for checking the user by email and password.
 const checkUserFromDb = async (email, password) => {
   const data = await userModel.find({ email });
   const hashedPassword = data[0].password;
-
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hashedPassword, (err, isMatch) => {
       if (err) {
@@ -127,7 +122,7 @@ const checkUserFromDb = async (email, password) => {
     });
   });
 };
-
+//This is the helper function for generation jwt token.
 const generateToken = async (secret, id) => {
   if (!secret || !id) {
     return false;
@@ -139,21 +134,20 @@ const generateToken = async (secret, id) => {
     try {
       return jwt.sign(data, secret); // return token
     } catch (error) {
-      console.error('Error generating token:', error);
+      console.error("Error generating token:", error);
       throw error; // or handle error as needed
     }
   }
 };
-
-const verifyToken=async(token)=> {
+//This is the helper function for verifying token.
+const verifyToken = async (token) => {
   const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+    idToken: token,
+    audience: process.env.CLIENT_ID,
   });
   const payload = ticket.getPayload();
-  return payload;  // This will contain the user's email and other info
-}
-
+  return payload; // This will contain the user's email and other info
+};
 
 module.exports = {
   getAllJobs,
@@ -163,5 +157,5 @@ module.exports = {
   encryptPassword,
   checkUserFromDb,
   generateToken,
-  verifyToken
+  verifyToken,
 };

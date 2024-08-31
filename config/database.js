@@ -1,6 +1,8 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const URL = process.env.MONGO_URL;
+
+// Connect to MongoDB database
 const connectToDB = async () => {
   try {
     await mongoose.connect(URL);
@@ -10,5 +12,5 @@ const connectToDB = async () => {
   }
 };
 module.exports = {
-  connectToDB
+  connectToDB,
 };

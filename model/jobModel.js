@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+//This is the schema for the jobs that are created.
 const jobSchema = new mongoose.Schema({
   jobTitle: {
     type: String,
@@ -16,11 +17,10 @@ const jobSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  location:{
-    type:String,
-    required: true
-  }
-
+  location: {
+    type: String,
+    required: true,
+  },
 });
 const jobModel = new mongoose.model("job", jobSchema);
 module.exports = jobModel;
