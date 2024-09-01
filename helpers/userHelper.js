@@ -11,11 +11,11 @@ const getAllJobs = async (title, location) => {
   const query = {};
   
   if (title) {
-    query.jobTitle = { $regex: new RegExp(title, "i")};
+    query.jobTitle = { $regex: new RegExp(title, "i") };
   }
 
   if (location) {
-    query.location = { $regex: new RegExp(location, "i")};
+    query.location = { $regex: new RegExp(location, "i") };
   }
   return await jobsModel.find(query);
 };
