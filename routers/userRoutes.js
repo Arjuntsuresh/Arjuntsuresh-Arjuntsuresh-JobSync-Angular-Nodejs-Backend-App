@@ -4,16 +4,8 @@ const userRoute = express.Router();
 const userHelper = require("../helpers/userHelper");
 const multer = require("multer");
 const userModel = require("../model/userModel");
-//multer.register
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "views/uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-const upload = multer({ storage: storage });
+const {storage} =require("../config/cloudinay-config")
+const upload = multer({ storage });
 //This route is used to find the uploaded jobs.
 userRoute.post("/jobs", async (req, res) => {
   try {
