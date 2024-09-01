@@ -11,7 +11,7 @@ const getAllJobs = async (title, location) => {
   const query = {};
   
   if (title) {
-    query.jobTitle = { $regex: new RegExp(title, "i") };
+    query.jobTitle = { $regex: new RegExp(title, "i")};
   }
 
   if (location) {
