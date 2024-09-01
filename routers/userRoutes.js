@@ -46,7 +46,7 @@ userRoute.get("/jobs/:id", async (req, res) => {
       throw new Error("Job not found");
     }
     res.status(200).send(job);
-  } catch (error) {
+  } catch (error) {    
     return res
       .status(404)
       .json({ status: "error", message: "error while retrieving job details" });
@@ -70,8 +70,7 @@ userRoute.post(
         phoneNumber,
         email,
         coverLetter,
-      } = req.body;
-
+      } = req.body;   
       // Get the resume file name from req.file
       const resume = req.file ? req.file.filename : null;
 
@@ -159,7 +158,7 @@ userRoute.post("/login", async (req, res) => {
         if (!token) {
           throw new Error("token is not found");
         }
-        res.redirect("http://localhost:4200/");
+        res.redirect("https://jobsyncapp.netlify.app");
         // res.status(200).json({ status: "success", user, token });
       }
     } else {
@@ -185,7 +184,6 @@ userRoute.post("/login", async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ status: "error", message: error.message });
   }
 });

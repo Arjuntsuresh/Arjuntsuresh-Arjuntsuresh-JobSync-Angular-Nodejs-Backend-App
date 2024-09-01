@@ -8,8 +8,8 @@ const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
 //This is the helper function that will be called when the user is searching for jobs.
 const getAllJobs = async (title, location) => {
-  let query = {};
-
+  const query = {};
+  
   if (title) {
     query.jobTitle = { $regex: new RegExp(title, "i") };
   }
