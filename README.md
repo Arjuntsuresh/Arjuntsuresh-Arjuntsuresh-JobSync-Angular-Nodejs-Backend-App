@@ -38,7 +38,7 @@ A platform for job seekers to browse listings and submit applications, while emp
 - *Mongoose*: ODM (Object Data Modeling) library for MongoDB and Node.js.
 - *Express-Session*: Middleware for managing sessions.
 - *JWT*: Used for storing session information.
-- *Multer*:For storing user CV.
+- *Cloudinary*:For storing user CV.
 
   
 ## 🌐 Deployment
