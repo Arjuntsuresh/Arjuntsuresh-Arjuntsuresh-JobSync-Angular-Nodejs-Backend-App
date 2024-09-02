@@ -70,6 +70,9 @@ To run the application locally:
     JWT_SECRET_KEY=your_jwt_secret_key
     TOKEN_HEADER_KEY=your_token_header_key
     CLIENT_ID=Your_client_id
+    CLOUD_API_KEY=Your_cloud_API_ID
+    CLOUD_API_SECRET_KEY=Your_cloud_Api_id
+    CLOUD_NAME=Your_Cloud_Name
     
 5. Start the application:
    ```bash
